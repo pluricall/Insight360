@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { ConnectMongoDb } from '../connectionDb/mongo'
+import { cookies } from 'next/headers'
 
 export async function POST(req: NextRequest) {
   try {
@@ -15,7 +16,7 @@ export async function POST(req: NextRequest) {
 
     const result = await collection.insertOne(newCube)
     return NextResponse.json(
-      { message: 'Cube created successfully', id: result.insertedId },
+      { message: 'Cube created successfully', _id: result.insertedId },
       { status: 201 },
     )
   } catch (error) {
@@ -27,11 +28,29 @@ export async function POST(req: NextRequest) {
   }
 }
 
+
 export async function GET() {
   try {
+    const cookieStore = await cookies()
+    const username = cookieStore.get('username')?.value
+
+    if (!username) {
+      return NextResponse.json(
+        { error: 'Username not found in cookies' },
+        { status: 400 }
+      )
+    }
+
     const db = await ConnectMongoDb()
     const collection = db.collection('cubes')
-    const cubes = await collection.find({}).toArray()
+
+    const cubes = await collection.find({ username }).toArray()
+
+    if (cubes.length === 0) {
+      return NextResponse.json(
+        { message: 'No cubes found for this username' }
+      )
+    }
 
     return NextResponse.json(cubes, {
       status: 200,
