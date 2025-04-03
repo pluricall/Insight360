@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { connectToDatabase } from '../db'
+import { ConnectMongoDb } from '../connectionDb/mongo'
 
 export async function POST(req: NextRequest) {
   try {
-    const db = await connectToDatabase()
+    const db = await ConnectMongoDb()
     const collection = db.collection('cubes')
     const body = await req.json()
 
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
 
 export async function GET() {
   try {
-    const db = await connectToDatabase()
+    const db = await ConnectMongoDb()
     const collection = db.collection('cubes')
     const cubes = await collection.find({}).toArray()
 

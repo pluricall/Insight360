@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb'
 import { NextRequest, NextResponse } from 'next/server'
-import { connectToDatabase } from '../../db'
+import { ConnectMongoDb } from '../../connectionDb/mongo'
 
 export async function PUT(
   req: NextRequest,
@@ -9,7 +9,7 @@ export async function PUT(
   const id = (await params).id
 
   try {
-    const db = await connectToDatabase()
+    const db = await ConnectMongoDb()
     const collection = db.collection('cubes')
     const body = await req.json()
 
