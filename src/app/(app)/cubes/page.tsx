@@ -1,8 +1,8 @@
-'use client'
+"use client";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { CubeTable } from "../components/CubeTable";
-import { TimeSplitDimensionForm } from "../components/TimeSplitDimensionForm";
+import { CubeTable } from "../(home)/components/CubeTable";
+import { TimeSplitDimensionForm } from "../(home)/components/TimeSplitDimensionForm";
 import { useTimeSplitDimension } from "@/hooks/useTimeSplitDimension";
 import { toast } from "sonner";
 import {
@@ -15,6 +15,7 @@ import {
 import { CircleX, Loader } from "lucide-react";
 import { apiDb } from "@/lib/axios";
 import Cookies from "js-cookie";
+import { Card } from "@/components/ui/card";
 
 type TableCell = {
   Name: string;
@@ -123,7 +124,6 @@ export default function Cubes() {
       setIsLoadingUpdate(false);
     }
   }
-  
 
   async function handleDeleteCube(cubeId: string) {
     if (!cubeId) {
@@ -158,26 +158,25 @@ export default function Cubes() {
     }
   }
 
-  
   useEffect(() => {
     const fetchCubeData = async () => {
       setIsLoadingCubes(true);
       try {
         const username = Cookies.get("username");
         const token = Cookies.get("access_token");
-  
+
         if (!username || !token) {
           console.error("Usuário não autenticado.");
           return;
         }
-  
+
         const response = await apiDb.get("/cubes", {
           headers: {
             Authorization: `Bearer ${token}`,
             "x-username": username,
           },
         });
-  
+
         setCubeConfigs(response.data);
       } catch (error) {
         console.error("Erro ao carregar cubos do backend:", error);
@@ -185,7 +184,7 @@ export default function Cubes() {
         setIsLoadingCubes(false);
       }
     };
-    fetchCubeData()
+    fetchCubeData();
   }, []);
 
   return (
@@ -206,23 +205,25 @@ export default function Cubes() {
           </p>
         </div>
       )}
-  
+
       {!isLoadingCubes &&
         cubeConfigs.length > 0 &&
         cubeConfigs.map(({ _id, tableData, updatedAt }) => (
-          <div key={_id} className="flex flex-col gap-2 w-full">
-            <TimeSplitDimensionForm register={register} setValue={setValue} />
-            <CubeTable
-              data={tableData}
-              lastUpdate={updatedAt}
-              cubeId={_id}
-              isLoadingRemove={isLoadingRemove}
-              isLoadingUpdate={isLoadingUpdate}
-              onClickUpdate={() => handleUpdateCube(_id)}
-              onClickRemove={() => handleDeleteCube(_id)}
-            />
-          </div>
+          <Card key={_id} className="p-2">
+            <div className="flex flex-col gap-2 w-full">
+              <TimeSplitDimensionForm register={register} setValue={setValue} />
+              <CubeTable
+                data={tableData}
+                lastUpdate={updatedAt}
+                cubeId={_id}
+                isLoadingRemove={isLoadingRemove}
+                isLoadingUpdate={isLoadingUpdate}
+                onClickUpdate={() => handleUpdateCube(_id)}
+                onClickRemove={() => handleDeleteCube(_id)}
+              />
+            </div>
+          </Card>
         ))}
     </div>
   );
-}  
+}
