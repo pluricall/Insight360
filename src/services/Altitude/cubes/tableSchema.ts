@@ -1,6 +1,6 @@
 import { api } from "@/lib/axios"
 
-export const tableSchema= async () => {
+export const tableSchema = async () => {
   try {
     const response = await api.get('/api/instance/instanceManager/cubeTableSchema',)
     return response.data
