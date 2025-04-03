@@ -8,9 +8,9 @@ export default function AppLayout({
 }>) {
   return (
     <SidebarProvider>
-        <SideMenu />
-      <div className="w-full py-2 px-4">
-        <main className="p-2 w-full">{children}</main>
+      <SideMenu />
+      <div className="w-full px-2">
+        <main className="w-full">{children}</main>
       </div>
     </SidebarProvider>
   );
