@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthProvider";
 import { User, Lock, Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const SignInSchema = z.object({
   username: z.string().min(2, { message: "Deve conter mais de 2 caracteres" }),
@@ -18,10 +19,11 @@ const SignInSchema = z.object({
 export type SignInForm = z.infer<typeof SignInSchema>;
 
 export default function SignIn() {
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<SignInForm>({
     resolver: zodResolver(SignInSchema),
   });
@@ -31,10 +33,13 @@ export default function SignIn() {
 
   async function handleSignIn({ username, password }: SignInForm) {
     try {
+      setIsLoading(true)
       await login(username, password);
       router.push('/')
     } catch (error: any) {
       toast.error(error.message || "Erro inesperado ao realizar login.");
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -99,8 +104,8 @@ export default function SignIn() {
             />
           </div>
         </div>
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
-          {isSubmitting ? (
+        <Button type="submit" className="w-full" disabled={isLoading}>
+          {isLoading ? (
             <>
               <Loader className="animate-spin" size={16} />
               Entrando...

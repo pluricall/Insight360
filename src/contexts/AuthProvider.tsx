@@ -43,11 +43,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           }
         } catch (error) {
           console.error('Erro ao renovar o token:', error)
-          logout()
+          logoutUser()
         }
       }, timeUntilRefresh)
     } else {
-      logout()
+      logoutUser()
     }
   }, [])
 
@@ -56,8 +56,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const token = Cookies.get('access_token')
       const expires = Cookies.get('expires')
       if (token && expires) {
-        api.defaults.headers.Authorization = `Bearer ${token}`
-        scheduleTokenRefresh(Number(expires))
+        const expiresAt = Number(expires)
+        const currentTime = Date.now()
+
+        if(currentTime >= expiresAt) {
+            logoutUser()
+        }else {
+          api.defaults.headers.Authorization = `Bearer ${token}`
+          scheduleTokenRefresh(Number(expires))
+        }
       }
     }
 
