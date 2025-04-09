@@ -104,20 +104,6 @@ export function SideMenu() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-gray-400">Funil</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <NavLink href="/funnel">
-                <SidebarMenuItem className="w-full flex items-center gap-2 p-2 rounded-md hover:bg-muted">
-                  <AudioLines className="w-5 h-5" />
-                  Minisom
-                </SidebarMenuItem>
-              </NavLink>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
       </SidebarContent>
 
       <SidebarFooter className="flex p-4 border-t border-gray-700">
