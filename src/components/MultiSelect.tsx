@@ -1,31 +1,33 @@
-import { Button } from '@/components/ui/button'
+import { Button } from "@/components/ui/button";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { useMemo, useState } from 'react'
-import { Input } from './ui/input';
-import { Trash } from 'lucide-react';
-import { Checkbox } from './ui/checkbox';
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ChevronDown, Search, Trash } from "lucide-react";
+import { useState } from "react";
+import { Input } from "./ui/input";
 
 interface MultiSelectProps {
   options: string[];
   value?: string[];
   onChange: (value: string[]) => void;
+  placeholder?: string;
   isLoading?: boolean;
-  isFullWidth?: boolean;
 }
 
 export const MultiSelect = ({
   options,
   value = [],
   onChange,
+  placeholder,
   isLoading = false,
-  isFullWidth = false,
 }: MultiSelectProps) => {
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState("");
+  const [visibleCount, setVisibleCount] = useState(50);
 
   const handleToggle = (option: string) => {
     if (value.includes(option)) {
@@ -35,97 +37,117 @@ export const MultiSelect = ({
     }
   };
 
-  const clearAllOptions = () => {
+  const clearInput = () => {
+    setFilter("");
     onChange([]);
+    setVisibleCount(50);
   };
 
   const handleSelectAll = () => {
-    if (filteredOptions.length === value.length) {
-      onChange([]); 
+    if (visibleOptions.length === value.length) {
+      onChange([]);
     } else {
-      onChange(filteredOptions);
+      onChange(visibleOptions);
     }
   };
 
-  const filteredOptions = useMemo(() => {
-    return options
-      ? options
-          .filter((option) =>
-            option.toLowerCase().includes(filter.toLowerCase())
-          )
-          .sort((a, b) => {
-            const aIsSelected = value.includes(a);
-            const bIsSelected = value.includes(b);
-            if (aIsSelected && !bIsSelected) return -1;
-            if (!aIsSelected && bIsSelected) return 1;
-            return 0;
-          })
-      : [];
-  }, [options, filter, value]);
+  const sortedOptions = options
+  .filter((option) => option && option.toLowerCase().includes(filter.toLowerCase()))
+  .sort((a, b) => {
+    const isSelectedA = value.includes(a);
+    const isSelectedB = value.includes(b);
+    if (isSelectedA && !isSelectedB) return -1;
+    if (!isSelectedA && isSelectedB) return 1;
+    return a.localeCompare(b);
+  });
+
+  const visibleOptions = sortedOptions.slice(0, visibleCount);
 
   return (
-    <div
-      className={`overflow-hidden ${isFullWidth ? "w-full" : "max-w-[600px]"}`}
-    >
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Input
-            value={
-              isLoading
+    <div className={`w-full flex items-center max-w-[600px]`}>
+      <DropdownMenu
+        open={open}
+        onOpenChange={(open) => {
+          setOpen(open);
+          if (!open) {
+            setVisibleCount(50);
+          }
+        }}
+      >
+        <DropdownMenuTrigger asChild className="w-full">
+          <Button
+            variant="outline"
+            className="truncate w-full overflow-hidden text-ellipsis whitespace-nowrap justify-between"
+            disabled={isLoading}
+          >
+            <span className="text-zinc-400">
+              {isLoading
                 ? "Carregando..."
                 : value.length > 0
                   ? value.join(", ")
-                  : "Clique para ver as opções"
-            }
-            placeholder="Selecione as opções:"
-            className={`text-start cursor-pointer hover:bg-secondary whitespace-nowrap text-ellipsis overflow-hidden`}
-            disabled={isLoading}
-          />
-        </PopoverTrigger>
-        <PopoverContent className="w-full p-4">
-          <div className="flex gap-2">
+                  : placeholder}
+            </span>
+            <ChevronDown className="ml-2 w-4 h-4 opacity-70" />
+          </Button>
+        </DropdownMenuTrigger>
+
+        <DropdownMenuContent
+          align="start"
+          className="max-h-96 overflow-auto p-2 rounded-xl shadow-xl border"
+        >
+          <div className="relative mb-3">
             <Input
-              type="text"
-              placeholder="Filtrar opções"
+              placeholder="Buscar..."
+              className="w-full pl-9 pr-9"
               value={filter}
-              onChange={(e) => setFilter(e.target.value)}
-              className="mb-2 max-w-full p-2 border rounded text-lg"
-              disabled={isLoading}
+              onChange={(e) => {
+                setFilter(e.target.value);
+                setVisibleCount(50);
+              }}
             />
-            <Button
-              variant={"outline"}
-              onClick={clearAllOptions}
-              title="Limpar tudo"
-            >
-              <Trash size={16} />
-            </Button>
+            <Search
+              size={16}
+              className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500"
+            />
+              <Trash onClick={clearInput} size={16} className="cursor-pointer absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-red-500 rounded-full"/>
+
           </div>
-          <div className="flex items-center gap-2 mb-2 pb-2 border-b">
-          <Checkbox
-            id="selectAll"
-            checked={filteredOptions.length === value.length} 
-            onCheckedChange={handleSelectAll}
-            disabled={isLoading}
-          />
-            <label htmlFor="selectAll" className="text-sm font-medium">Selecionar todos</label>
-          </div>
-          <div className="max-h-56 overflow-y-auto">
-            {filteredOptions.map((option) => (
-              <div key={option} className="flex items-center space-x-2">
-                <Checkbox
-                  id={option}
-                  checked={value.includes(option)}
-                  onCheckedChange={() => handleToggle(option)}
-                  disabled={isLoading}
-                />
-                <label htmlFor={option} className="text-sm">
-                  {option}
-                </label>
-              </div>
+
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={handleSelectAll}
+            className="w-full mb-2"
+          >
+            Selecionar Todos
+          </Button>
+
+          <DropdownMenuSeparator />
+
+          <div className="flex flex-col gap-1">
+            {visibleOptions.map((option) => (
+              <DropdownMenuCheckboxItem
+                key={option}
+                checked={value.includes(option)}
+                onCheckedChange={() => handleToggle(option)}
+                onSelect={(e) => e.preventDefault()}
+                className="px-8 py-1 rounded-md hover:bg-muted"
+              >
+                {option}
+              </DropdownMenuCheckboxItem>
             ))}
+
+            {sortedOptions.length > visibleCount && (
+              <button
+                onClick={() => setVisibleCount((prev) => prev + 50)}
+                className="text-blue-600 text-sm mt-2 hover:underline"
+              >
+                Ver mais opções
+              </button>
+            )}
           </div>
-        </PopoverContent>
-      </Popover>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
-  )
-}
+  );
+};

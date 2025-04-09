@@ -11,7 +11,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useTimeSplitDimension } from "@/hooks/useTimeSplitDimension";
-import { MultiSelect } from "@/components/MultiSelect";
 import {
   Select,
   SelectContent,
@@ -31,6 +30,7 @@ import {
 } from "@/services";
 import Cookies from "js-cookie";
 import { apiDb } from "@/lib/axios";
+import { MultiSelect } from "@/components/MultiSelect";
 
 const cubeSchema = z.object({
   timeSplitDimension: z.string().optional(),
@@ -299,6 +299,7 @@ export default function Home() {
                   options={dimensionOptions[index] || []}
                   isLoading={loadingIndexes[index] || false}
                   value={watch(`dimensionRequests.${index}.EntityIdFilter`)}
+                  placeholder='Selecione os filtros'
                   onChange={(selectedIds) =>
                     setValue(
                       `dimensionRequests.${index}.EntityIdFilter`,
@@ -357,13 +358,13 @@ export default function Home() {
           )}
           <MultiSelect
             options={columnNames}
-            isFullWidth
             value={
               watch("columns")
                 ? watch("columns").split(",").filter(Boolean)
                 : []
             }
-            onChange={(selected) => setValue("columns", selected.join(","))}
+            placeholder='Selecione as colunas desejadas'
+            onChange={(selected: any) => setValue("columns", selected.join(","))}
             isLoading={columnNames.length === 0}
           />
         </div>
