@@ -51,6 +51,22 @@ export default function Cubes() {
     setValue,
   });
 
+  // Atualiza a lista de cubos após a atualização de um cubo
+  const updateCubeList = (updatedCube: CubeConfig) => {
+    setCubeConfigs((prevConfigs) =>
+      prevConfigs.map((config) =>
+        config._id === updatedCube._id ? updatedCube : config
+      )
+    );
+  };
+
+  // Remove o cubo da lista após a exclusão
+  const removeCubeFromList = (cubeId: string) => {
+    setCubeConfigs((prevConfigs) =>
+      prevConfigs.filter((config) => config._id !== cubeId)
+    );
+  };
+
   async function handleUpdateCube(cubeId: string) {
     if (!cubeId) {
       toast.error("Cube ID não encontrado.");
@@ -77,9 +93,7 @@ export default function Cubes() {
       const payload: OpenCubeData = {
         columns: cubeConfig.columns,
         dimensionRequests: cubeConfig.dimensionRequests,
-        timeSplitDimension: watch(
-          "timeSplitDimension"
-        ) as TimeSplitDimensionEnum,
+        timeSplitDimension: watch("timeSplitDimension") as TimeSplitDimensionEnum,
         startGmtMoment: watch("startGmtMoment"),
         endGmtMoment: watch("endGmtMoment"),
         discriminator: "",
@@ -92,13 +106,7 @@ export default function Cubes() {
       await closeCube(cursorId);
 
       const dataToUpdate = {
-        columns: cubeConfig.columns,
-        dimensionRequests: cubeConfig.dimensionRequests.map((request: any) => ({
-          Dimension: request.Dimension,
-          EntityIdFilter: request.EntityIdFilter,
-          SqlFilter: request.SqlFilter,
-          discriminator: request.discriminator,
-        })),
+        ...cubeConfig,
         tableData: updatedAttributes.map((row: any[]) =>
           row.map((cell: any) => ({
             Name: cell.Name,
@@ -108,6 +116,9 @@ export default function Cubes() {
         ),
         updatedAt: new Date().toISOString(),
       };
+
+      // Atualiza o cubo na lista local
+      updateCubeList(dataToUpdate);
 
       await apiDb.put(`cubes/${cubeId}`, dataToUpdate, {
         headers: {
@@ -149,6 +160,8 @@ export default function Cubes() {
         },
       });
 
+      removeCubeFromList(cubeId);
+
       toast.success("Cubo excluído com sucesso!");
     } catch (error: any) {
       console.error("Erro ao excluir cubo:", error);
@@ -188,13 +201,13 @@ export default function Cubes() {
   }, []);
 
   return (
-    <div className="max-w-screen-xl mx-auto w-full min-h-screen flex flex-col items-center justify-center space-y-8">
+    <div className="max-w-screen-xl mx-auto w-full min-h-screen flex flex-col items-center p-2 space-y-8">
       {isLoadingCubes && (
         <div className="flex flex-col items-center justify-center text-center h-full">
           <Loader size={80} className="animate-spin text-gray-500" />
         </div>
       )}
-  
+
       {!isLoadingCubes && cubeConfigs.length === 0 && (
         <div className="flex flex-col items-center justify-center text-center h-full">
           <CircleX size={120} className="text-gray-400 mb-2 animate-bounce" />
@@ -206,24 +219,26 @@ export default function Cubes() {
         </div>
       )}
 
-      {!isLoadingCubes &&
-        cubeConfigs.length > 0 &&
-        cubeConfigs.map(({ _id, tableData, updatedAt }) => (
-          <Card key={_id} className="p-2">
-            <div className="flex flex-col gap-2 w-full">
-              <TimeSplitDimensionForm register={register} setValue={setValue} />
-              <CubeTable
-                data={tableData}
-                lastUpdate={updatedAt}
-                cubeId={_id}
-                isLoadingRemove={isLoadingRemove}
-                isLoadingUpdate={isLoadingUpdate}
-                onClickUpdate={() => handleUpdateCube(_id)}
-                onClickRemove={() => handleDeleteCube(_id)}
-              />
-            </div>
-          </Card>
-        ))}
+      {!isLoadingCubes && cubeConfigs.length > 0 && (
+        <div className="flex flex-col gap-4 w-full">
+          {cubeConfigs.map(({ _id, tableData, updatedAt }) => (
+            <Card key={_id} className="p-2">
+              <div className="flex flex-col gap-2 w-full">
+                <TimeSplitDimensionForm register={register} setValue={setValue} />
+                <CubeTable
+                  data={tableData}
+                  lastUpdate={updatedAt}
+                  cubeId={_id}
+                  isLoadingRemove={isLoadingRemove}
+                  isLoadingUpdate={isLoadingUpdate}
+                  onClickUpdate={() => handleUpdateCube(_id)}
+                  onClickRemove={() => handleDeleteCube(_id)}
+                />
+              </div>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
