@@ -7,6 +7,7 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -39,18 +40,22 @@ export function SideMenu() {
     }
   }
   return (
-    <Sidebar className="bg-gray-900 text-white min-h-screen">
-      <div className=" flex items-center justify-center gap-4 p-4 border-b border-gray-700">
-        <Image
-          src="/avatar.jpeg"
-          alt="Avatar Pluricall"
-          height={40}
-          width={40}
-          className="rounded-full"
-        />
+    <Sidebar className=" text-white min-h-screen">
+      <SidebarHeader className=" flex items-center justify-center gap-4 p-4 border-b border-gray-700">
+        <div className="flex items-center gap-4">
+          <Image
+            src="/avatar.jpeg"
+            alt="Avatar Pluricall"
+            height={40}
+            width={40}
+            className="rounded-full"
+          />
 
-        <h1 className="text-center text-lg font-bold uppercase">INSIGHT 360</h1>
-      </div>
+          <h1 className="text-primary text-center text-lg font-bold uppercase">
+            INSIGHT 360
+          </h1>
+        </div>
+      </SidebarHeader>
 
       <SidebarContent className="p-4">
         <SidebarGroup>
@@ -60,13 +65,13 @@ export function SideMenu() {
           <SidebarGroupContent>
             <SidebarMenu>
               <NavLink href="/">
-                <SidebarMenuItem className="w-full flex items-center gap-2 p-2 rounded-md hover:bg-gray-800">
+                <SidebarMenuItem className="w-full flex items-center gap-2 p-2 rounded-md hover:bg-muted">
                   <Home className="w-5 h-5" />
                   Dashboard
                 </SidebarMenuItem>
               </NavLink>
               <NavLink href="/cubes">
-                <SidebarMenuItem className="w-full flex items-center gap-2 p-2 rounded-md hover:bg-gray-800">
+                <SidebarMenuItem className="w-full flex items-center gap-2 p-2 rounded-md hover:bg-muted">
                   <Box className="w-5 h-5" />
                   Cubes
                 </SidebarMenuItem>
@@ -85,14 +90,14 @@ export function SideMenu() {
                 href="https://agent.tejo.cc/minisom/sign-in"
                 target="_blank"
               >
-                <SidebarMenuItem className="w-full flex items-center gap-2 p-2 rounded-md hover:bg-gray-800">
+                <SidebarMenuItem className="w-full flex items-center gap-2 p-2 rounded-md hover:bg-muted">
                   <AudioLines className="w-5 h-5" />
                   Minisom
                 </SidebarMenuItem>
               </NavLink>
               <NavLink href="/galp">
-                <SidebarMenuItem className="w-full flex items-center gap-2 p-2 rounded-md hover:bg-gray-800">
-                <Fuel className="w-5 h-5" />
+                <SidebarMenuItem className="w-full flex items-center gap-2 p-2 rounded-md hover:bg-muted">
+                  <Fuel className="w-5 h-5" />
                   Galp
                 </SidebarMenuItem>
               </NavLink>
@@ -104,27 +109,29 @@ export function SideMenu() {
           <SidebarGroupLabel className="text-gray-400">Funil</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-                  <NavLink href="/funnel">
-              <SidebarMenuItem className="w-full flex items-center gap-2 p-2 rounded-md hover:bg-gray-800">
-                    <AudioLines className="w-5 h-5" />
-                    Minisom
-              </SidebarMenuItem>
-                  </NavLink>
+              <NavLink href="/funnel">
+                <SidebarMenuItem className="w-full flex items-center gap-2 p-2 rounded-md hover:bg-muted">
+                  <AudioLines className="w-5 h-5" />
+                  Minisom
+                </SidebarMenuItem>
+              </NavLink>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
 
       <SidebarFooter className="flex p-4 border-t border-gray-700">
-        <Button
-          onClick={handleLogout}
-          disabled={loading}
-          variant="outline"
-          className="w-full text-white border-gray-600 hover:bg-gray-800"
-        >
-          Sair
-        </Button>
-        <ThemeToggle/>
+        <div className="flex gap-2 w-full items-center justify-between">
+          <Button
+            onClick={handleLogout}
+            disabled={loading}
+            variant="outline"
+            className="text-white border-gray-600 hover:bg-muted"
+          >
+            Sair
+          </Button>
+          <ThemeToggle />
+        </div>
       </SidebarFooter>
     </Sidebar>
   );

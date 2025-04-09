@@ -1,5 +1,4 @@
 import { SideMenu } from "@/components/SideMenu";
-import { SidebarProvider } from "@/components/ui/sidebar";
 
 export default function AppLayout({
   children,
