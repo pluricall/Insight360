@@ -24,7 +24,7 @@ export default function RootLayout({
         className={`${inter.className} font-sans antialiased scroll-smooth`}
       >
         <Providers>
-            <main>{children}</main>
+            <main className='h-full w-full'>{children}</main>
         </Providers>
       </body>
     </html>
