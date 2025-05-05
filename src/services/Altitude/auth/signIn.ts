@@ -1,4 +1,3 @@
-import { env } from '@/env'
 import { api } from '@/lib/axios'
 
 interface TokenRequestProps {
@@ -11,7 +10,7 @@ export const signIn = async ({ username, password }: TokenRequestProps) => {
     username,
     password,
     grant_type: 'password',
-    instanceaddress: env.NEXT_PUBLIC_INSTANCE_ADDRESS_ONPREMISE || '',
+    instanceaddress: process.env.NEXT_PUBLIC_INSTANCE_ADDRESS_CLOUD,
     secureaccess: 'false',
     authenticationType: 'Uci',
     forced: 'true',

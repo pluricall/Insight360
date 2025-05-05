@@ -1,11 +1,10 @@
-import { env } from '@/env'
-import { api } from '@/lib/axios'
+import { api } from "@/lib/axios"
 
 export const getAllCampaigns = async (): Promise<string[]> => {
   try {
     const response = await api.get('/api/instance/campaignNames', {
       params: {
-        'api-version': env.API_VERSION,
+        'api-version': process.env.API_VERSION,
       },
     })
     return response.data

@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 const TOKEN_KEY = 'access_token'
-const protectedRoutes = ['/']
+const protectedRoutes = ['/Insight360']
 
 export async function middleware(request: NextRequest) {
   const cookie = await cookies()
@@ -12,12 +12,12 @@ export async function middleware(request: NextRequest) {
   const response = NextResponse.next()
 
   if (protectedRoutes.includes(pathname) && !token) {
-    const url = new URL('/sign-in', request.url)
+    const url = new URL('/Insight360/sign-in', request.url)
     return NextResponse.redirect(url)
   }
 
-  if (pathname === '/sign-in' && token) {
-    const url = new URL('/', request.url)
+  if (pathname === '/Insight360/sign-in' && token) {
+    const url = new URL('/Insight360', request.url)
     return NextResponse.redirect(url)
   }
 
@@ -25,5 +25,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/sign-in'],
+  matcher: ['/Insight360', '/Insight360/sign-in'],
 }

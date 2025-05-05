@@ -1,5 +1,4 @@
-import { env } from '@/env'
-import { api } from '@/lib/axios'
+import { api } from "@/lib/axios"
 
 export const getCampaignIdByName = async (
   campaignName: string,
@@ -8,7 +7,7 @@ export const getCampaignIdByName = async (
     const response = await api.get('/api/instance/campaignByName', {
       params: {
         campaignName,
-        'api-version': env.API_VERSION,
+        'api-version': process.env.API_VERSION,
       },
     })
     return response.data

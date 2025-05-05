@@ -52,7 +52,7 @@ export default function SignIn() {
       }}
     >
       <img
-        src="/logo.png"
+        src="/Insight360/logo.png"
         alt="Logo da Pluricall SA"
         className=" w-96 mb-20"
       />

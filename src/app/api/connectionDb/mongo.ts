@@ -1,4 +1,3 @@
-import { env } from '@/env'
 import { MongoClient } from 'mongodb'
 
 let client: MongoClient | null = null
@@ -6,7 +5,7 @@ let client: MongoClient | null = null
 export async function ConnectMongoDb() {
   if (!client) {
     try {
-      const DATABASE_URL = env.DATABASE_URL || ''
+      const DATABASE_URL = process.env.DATABASE_URL_MONGO || ''
       client = new MongoClient(DATABASE_URL)
       await client.connect()
       console.log('Conexão com o MongoDB estabelecida com sucesso.')
@@ -16,5 +15,5 @@ export async function ConnectMongoDb() {
     }
   }
 
-  return client.db('insight360')
+  return client.db('insightdb')
 }

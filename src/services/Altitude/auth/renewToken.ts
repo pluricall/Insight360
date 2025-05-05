@@ -1,4 +1,3 @@
-import { env } from '@/env'
 import { api } from '@/lib/axios'
 
 interface RenewTokenRequestProps {
@@ -9,7 +8,7 @@ export const renewToken = async({ refresh_token }: RenewTokenRequestProps) => {
   const bodyRequest = new URLSearchParams({
     refresh_token,
     grant_type: 'refresh_token',
-    instanceaddress: env.NEXT_PUBLIC_INSTANCE_ADDRESS_ONPREMISE || '',
+    instanceaddress: process.env.NEXT_PUBLIC_INSTANCE_ADDRESS_CLOUD,
     authenticationType: 'Uci',
     operation: 'attach',
   })

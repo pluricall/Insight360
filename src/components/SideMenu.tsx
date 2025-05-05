@@ -1,5 +1,5 @@
 "use client";
-import { AudioLines, Box, Fuel, Home } from "lucide-react";
+import { AudioLines, Box, Fuel, Home, X } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -9,7 +9,6 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Button } from "./ui/button";
@@ -23,7 +22,7 @@ import { ThemeToggle } from "./theme/themeToggle";
 
 export function SideMenu() {
   const [loading, setLoading] = useState(false);
-  const { logoutUser } = useAuth();
+  const { logoutUser} = useAuth();
   const router = useRouter();
 
   async function handleLogout() {
@@ -44,7 +43,7 @@ export function SideMenu() {
       <SidebarHeader className=" flex items-center justify-center gap-4 p-4 border-b border-gray-700">
         <div className="flex items-center gap-4">
           <Image
-            src="/avatar.jpeg"
+            src="/Insight360/avatar.jpeg"
             alt="Avatar Pluricall"
             height={40}
             width={40}
@@ -76,6 +75,12 @@ export function SideMenu() {
                   Cubes
                 </SidebarMenuItem>
               </NavLink>
+              <NavLink href="/cx">
+  <SidebarMenuItem className="w-full flex items-center gap-2 p-2 rounded-md hover:bg-muted">
+    <X className="w-5 h-5" />
+  Análise de Campanhas
+  </SidebarMenuItem>
+</NavLink>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -112,7 +117,7 @@ export function SideMenu() {
             onClick={handleLogout}
             disabled={loading}
             variant="outline"
-            className="text-white border-gray-600 hover:bg-muted"
+            className="text-primary border-gray-600 hover:bg-muted"
           >
             Sair
           </Button>

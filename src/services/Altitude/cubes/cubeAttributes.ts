@@ -1,5 +1,4 @@
-import { env } from '@/env'
-import { api } from '@/lib/axios'
+import { api } from "@/lib/axios"
 
 export const cubeAttributes = async(cursorId: number) => {
   try {
@@ -10,7 +9,7 @@ export const cubeAttributes = async(cursorId: number) => {
           cursorId,
           position: 0,
           numberOfRows: 50,
-          'api-version': env.API_VERSION,
+          'api-version': process.env.API_VERSION,
         },
       },
     )

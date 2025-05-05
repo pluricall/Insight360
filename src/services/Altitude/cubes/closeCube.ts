@@ -1,4 +1,3 @@
-import { env } from '@/env'
 import { api } from '@/lib/axios'
 import { AxiosError } from 'axios'
 
@@ -7,7 +6,7 @@ export const closeCube= async (cursorId: number) => {
     const response = await api.put('/api/instance/cubeCursor/close', null, {
       params: {
         cursorId,
-        'api-version': env.API_VERSION,
+        'api-version': process.env.API_VERSION,
       },
     })
     return response.status

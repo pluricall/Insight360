@@ -51,7 +51,6 @@ export default function Cubes() {
     setValue,
   });
 
-  // Atualiza a lista de cubos após a atualização de um cubo
   const updateCubeList = (updatedCube: CubeConfig) => {
     setCubeConfigs((prevConfigs) =>
       prevConfigs.map((config) =>
@@ -60,7 +59,6 @@ export default function Cubes() {
     );
   };
 
-  // Remove o cubo da lista após a exclusão
   const removeCubeFromList = (cubeId: string) => {
     setCubeConfigs((prevConfigs) =>
       prevConfigs.filter((config) => config._id !== cubeId)

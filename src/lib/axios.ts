@@ -2,12 +2,12 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 
 export const api = axios.create({
-  baseURL: 'http://localhost/uAgentWeb8',
+  baseURL: 'https://pluricall.altitudecloud.com/uagentweb8',
   withCredentials: true,
 })
 
 export const apiDb = axios.create({
-  baseURL: 'http://localhost:3000/api',
+  baseURL: 'http://localhost:3000/Insight360/api',
   withCredentials: true,
 })
 
@@ -30,7 +30,7 @@ api.interceptors.response.use(
       Cookies.remove('access_token')
       Cookies.remove('refresh_token')
       Cookies.remove('token_expiration')
-      window.location.href = '/sign-in'
+      window.location.href = '/Insight360/sign-in'
     }
     return Promise.reject(error)
   },
