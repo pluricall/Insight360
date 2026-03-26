@@ -1,10 +1,13 @@
-import { api } from "@/lib/axios"
+import { altitude } from "@/lib/axios"
 
-export const tableSchema = async () => {
+export async function tableSchema() {
   try {
-    const response = await api.get('/api/instance/instanceManager/cubeTableSchema',)
+    const response = await altitude.get(
+      `/api/instance/instanceManager/cubeTableSchema`,)
+
     return response.data
   } catch (error: any) {
-    return console.error('Erro ao buscar esquema da tabela:', error.response)
+   console.error('Erro ao buscar esquema da tabela:', error.response)
+   throw new Error()
   }
 }

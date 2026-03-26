@@ -1,4 +1,4 @@
-import { api } from "@/lib/axios"
+import { altitude } from "@/lib/axios"
 
 export enum TimeSplitDimensionEnum {
   QuarterHour = 'QuarterHour',
@@ -27,20 +27,21 @@ export interface OpenCubeData {
   discriminator: string
 }
 
-export const openCube = async (data: OpenCubeData) => {
+export async function openCube(data: OpenCubeData) {
   try {
     const formattedData = {
       ...data,
       columns: data.columns.split(',').map((col: string) => col.trim()),
     }
 
-    const response = await api.post(
+    const response = await altitude.post(
       '/api/instance/instanceManager/newCubeCursor',
-      formattedData,
+      formattedData
     )
+
     return response.data
   } catch (error: any) {
     console.error(error.response?.data || 'Error creating cube cursor')
-    throw error
+    throw new Error()
   }
 }

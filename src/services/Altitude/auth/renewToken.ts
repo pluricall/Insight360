@@ -1,10 +1,11 @@
-import { api } from '@/lib/axios'
+import { altitude } from '@/lib/axios'
+import axios from 'axios'
 
 interface RenewTokenRequestProps {
   refresh_token: string
 }
 
-export const renewToken = async({ refresh_token }: RenewTokenRequestProps) => {
+export const renewToken = async ({ refresh_token }: RenewTokenRequestProps) => {
   const bodyRequest = new URLSearchParams({
     refresh_token,
     grant_type: 'refresh_token',
@@ -14,7 +15,7 @@ export const renewToken = async({ refresh_token }: RenewTokenRequestProps) => {
   })
 
   try {
-    const response = await api.post('/token', bodyRequest, {
+    const response = await axios.post('https://pluricall.altitudecloud.com/uAgentWeb8/token', bodyRequest, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },

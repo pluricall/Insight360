@@ -1,25 +1,25 @@
-import Link from 'next/link'
+import { Button } from '@/components/ui/button';
+import { FileQuestion, Search } from 'lucide-react';
+import Link from 'next/link';
 
 export default function NotFound() {
   return (
-    <div className="flex h-screen items-center justify-center bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
-      <div className="text-center bg-white p-8 rounded-lg shadow-xl max-w-md w-full">
-        <h1 className="text-6xl font-bold text-gray-800 mb-4 animate__animated animate__fadeIn">
-          404
-        </h1>
-        <h2 className="text-3xl font-semibold text-gray-800 mb-6 animate__animated animate__fadeIn">
-          Página não encontrada.
-        </h2>
-        <p className="text-lg text-gray-600 mb-8 animate__animated animate__fadeIn">
-          A página que você está procurando não existe ou foi movida.
-        </p>
-        <Link
-          href="/"
-          className="inline-block px-6 py-3 bg-sky-500 text-white font-semibold rounded-lg shadow-lg transition duration-300 hover:bg-sky-600 transform hover:scale-105"
-        >
-          Voltar para a Página Inicial
-        </Link>
+    <div className="min-h-screen flex items-center justify-center px-4 flex-col bg-black">
+      <div className="relative inline-block mb-3 font-sans">
+        <span className="text-8xl font-bold text-white inline-block transform -rotate-12 -translate-y-2 -translate-x-1">
+          4
+        </span>
+        <span className="text-8xl font-bold text-white inline-block">0</span>
+        <span className="text-8xl font-bold text-white inline-block">4</span>
+      </div>
+
+      <p className="text-gray-100 mb-8">Página não encontrada</p>
+
+      <div className="mt-6 flex justify-center gap-4">
+        <Button asChild variant='secondary'>
+          <Link href="/agents/create">Home</Link>
+        </Button>
       </div>
     </div>
-  )
+  );
 }

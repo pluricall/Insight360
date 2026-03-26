@@ -9,7 +9,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       <ThemeProvider storageKey="dashboard-theme" defaultTheme="dark">
         <SidebarProvider>
         <AuthProvider>
-          <Toaster richColors />
+          <Toaster richColors position="top-right"/>
           {children}
         </AuthProvider>
         </SidebarProvider>

@@ -1,21 +1,19 @@
-import { api } from "@/lib/axios"
+import { altitude } from "@/lib/axios"
 
-export const cubeAttributes = async(cursorId: number) => {
+export async function cubeAttributes(cursorId: number) {
   try {
-    const response = await api.get(
-      '/api/instance/cubeCursor/fetchAsAttributes',
-      {
-        params: {
-          cursorId,
-          position: 0,
-          numberOfRows: 50,
-          'api-version': process.env.API_VERSION,
-        },
+    const response = await altitude.get('/api/instance/cubeCursor/fetchAsAttributes', {
+      params: {
+        cursorId: cursorId.toString(),
+        position: '0',
+        numberOfRows: '50',
+        'api-version': process.env.API_VERSION || '',
       },
-    )
+    })
+
     return response.data
-  } catch (error) {
-    console.error('Error fetching cube attributes:', error)
-    throw error
+  } catch (error: any) {
+    console.error('Erro ao buscar atributos do CubeCursor:', error)
+    throw new Error()
   }
 }

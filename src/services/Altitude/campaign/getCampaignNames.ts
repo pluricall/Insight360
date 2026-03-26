@@ -1,12 +1,8 @@
-import { api } from '@/lib/axios'
+import { altitude } from "@/lib/axios"
 
-export const getCampaignByName = async (): Promise<string[]> => {
+export async function getCampaignByName() {
   try {
-    const response = await api.get('/api/instance/campaignNames', {
-      params: {
-        'api-version': process.env.API_VERSION,
-      },
-    })
+    const response = await altitude.put(`/api/instance/campaignNames`)
     return response.data
   } catch (error) {
     console.error('Error fetching campaign names:', error)

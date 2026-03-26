@@ -8,26 +8,26 @@ datasource db {
 }
 
 model GalpInboundSchema {
-  id                String @id @default(uuid())
-  call_uuid         String
-  call_start        DateTime
-  owner_name        String
-  call_end          DateTime
-  talk_time         Int?
+  id                   String   @id @default(uuid())
+  call_uuid            String
+  call_start           DateTime
+  owner_name           String
+  call_end             DateTime
+  talk_time            Int?
   servicos_assistencia String?
-  queue_time        Int
-  wait_time         Int
-  term_reason       String
-  call_outcome_group String
-  call_outcome_name String
-  createdAt         DateTime @default(now())
+  queue_time           Int
+  wait_time            Int
+  term_reason          String
+  call_outcome_group   String
+  call_outcome_name    String
+  createdAt            DateTime @default(now())
 }
 
 model GalpOutboundSchema {
-  id                   String  @id @default(uuid())
+  id                   String   @id @default(uuid())
   call_uuid            String
   call_outcome_group   String
   servicos_assistencia String?
-  call_start          DateTime
-  createdAt           DateTime @default(now())
+  call_start           DateTime
+  createdAt            DateTime @default(now())
 }

@@ -1,8 +1,13 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
-export const api = axios.create({
+export const altitude = axios.create({
   baseURL: 'https://pluricall.altitudecloud.com/uagentweb8',
+  withCredentials: true,
+})
+
+export const altitudeOnPrem = axios.create({
+  baseURL: 'https://agent.tejo.cc/uAgentWeb8',
   withCredentials: true,
 })
 
@@ -11,7 +16,7 @@ export const apiDb = axios.create({
   withCredentials: true,
 })
 
-api.interceptors.request.use(
+altitude.interceptors.request.use(
   async (config) => {
     const token = Cookies.get('access_token')
     if (token) {
@@ -22,7 +27,7 @@ api.interceptors.request.use(
   (error) => Promise.reject(error),
 )
 
-api.interceptors.response.use(
+altitude.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {

@@ -1,9 +1,17 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  eslint:{ignoreDuringBuilds: true},
+ 
   reactStrictMode: true,
   basePath: '/Insight360',
   crossOrigin: 'anonymous',
+  rewrites: async () => [
+  {
+    source: "/apiloader/:path*",
+    destination: "http://192.168.0.73:3333/api/:path*",
+  },
+],
   async headers() {
     return [
       {

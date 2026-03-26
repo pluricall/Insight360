@@ -1,15 +1,13 @@
-import { api } from '@/lib/axios'
+import { altitude } from '@/lib/axios'
 import { AxiosError } from 'axios'
 
-export const closeCube= async (cursorId: number) => {
+export async function closeCube(cursorId: number) {
   try {
-    const response = await api.put('/api/instance/cubeCursor/close', null, {
-      params: {
-        cursorId,
-        'api-version': process.env.API_VERSION,
-      },
+    const response = await altitude.get("/api/instance/cubeCursor/close", {
+      params: { cursorId },
     })
-    return response.status
+
+    return response.data
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
       console.error({
@@ -17,8 +15,10 @@ export const closeCube= async (cursorId: number) => {
         data: error.response.data,
         headers: error.response.headers,
       })
+      throw new Error()
     } else {
       console.error('Unexpected error:', error)
     }
+    throw new Error()
   }
 }

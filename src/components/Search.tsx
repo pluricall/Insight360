@@ -11,7 +11,7 @@ interface SearchProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string;
 }
 
-export function Search({
+export function SearchInput({
   value,
   onChange,
   placeholder = "Buscar...",

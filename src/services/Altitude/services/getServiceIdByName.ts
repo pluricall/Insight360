@@ -1,8 +1,8 @@
-import { api } from '@/lib/axios'
+import { altitude } from '@/lib/axios'
 
 export const serviceIdByName = async (serviceName: string) => {
   try {
-    const response = await api.get('/api/instance/serviceByName', {
+    const response = await altitude.get('/api/instance/serviceByName', {
       params: {
         serviceName,
         'api-version': process.env.API_VERSION,
