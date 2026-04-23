@@ -92,7 +92,6 @@ export default function UpdateTypPage() {
         return toast.error("Não há alterações para atualizar.");
       }
 
-      console.log(data)
 
       const response = await fetch(
         `/Insight360/apiloader/bd/typ/update/${typId}`,

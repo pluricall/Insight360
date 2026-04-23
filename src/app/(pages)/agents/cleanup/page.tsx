@@ -112,7 +112,7 @@ export default function CleanupAgentsPage() {
     <div>
       <Header title="Clean Up"/>
       <div className="flex-1 flex justify-center p-4">
-          <div className="w-80">
+          <Card className="w-80 p-4">
             <form onSubmit={handleSubmit(openOnPremDialog)} className="flex flex-col gap-4">
               <Input label="Username do agente" {...register("agentName")} error={errors.agentName?.message} />
               <Controller
@@ -129,7 +129,7 @@ export default function CleanupAgentsPage() {
                 {loading ? "Executando cleanup..." : "Executar Cleanup"}
               </Button>
             </form>
-          </div>
+          </Card>
 
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogContent>

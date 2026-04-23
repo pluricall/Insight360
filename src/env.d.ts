@@ -3,20 +3,20 @@ import { z } from 'zod'
 const envSchema = z.object({
   MODE: z.enum(['production', 'development', 'test']).default('development'),
   NEXT_PUBLIC_INSTANCE_ADDRESS_CLOUD: z
-    .string()
-    .default('172.30.226.5:1500'),
+    .string(),
     NEXT_PUBLIC_BASE_URL_CLOUD: z
     .string()
     .default('https://pluricall.altitudecloud.com/uagentweb8'),
   NEXT_PUBLIC_BASE_URL_API: z.string().default('http://localhost:3001/api'),
-  NEXT_PUBLIC_INSTANCE_ADDRESS_ON_PREMISE:z
-    .string()
-    .default('192.168.0.160:1500'),
+  NEXT_PUBLIC_INSTANCE_ADDRESS_ON_PREM: z
+    .string(),
   API_VERSION: z.string().default('8.6.2000'),
+  
   DATABASE_URL_MONGO: z.string(),
   DATABASE_URL_POSTGRES: z
   .string()
-  .default('postgresql://galp:galp@localhost:5433/galpdb'),
+  .default('postgresql://insight:insight@localhost:5433/insightdb'),
+
   API_VERSION: z.string(),
   SMTP_HOST: z.string().default('mail.pluricall.pt'),
   SMTP_PORT: z.coerce.number().default(465),

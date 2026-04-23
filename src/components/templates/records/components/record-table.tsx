@@ -1,3 +1,4 @@
+"use client";
 import {
   Table,
   TableBody,
@@ -8,61 +9,45 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { SkeletonTable } from "./skeleton-table";
+import { useEffect, useState } from "react";
 
-type ClientRecordingsParams = {
-  clientName: string;
-  ct_: string;
-  percentDifferentsResult: number;
-  startTime: string;
-  siteId: string;
-  driveId: string;
-  folderPath: string;
-  status: "ACTIVO" | "INACTIVO";
-  isBd: boolean;
-  isHistorical: boolean;
-};
+export const RecordTable = ({ refresh }: { refresh: number }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [clientRecords, setClientRecords] = useState<any[]>([]);
+  const rowsToShow = isLoading ? 10 : clientRecords.length;
 
-interface RecordingTableProps {
-  data?: ClientRecordingsParams[];
-  setData?: React.Dispatch<React.SetStateAction<ClientRecordingsParams[]>>;
-  loading?: boolean;
-}
+  const handleInactivate = async (clientName: string) => {
+    const confirmed = window.confirm(`Deseja realmente inativar o cliente "${clientName}"?`);
+    if (!confirmed) return;
 
-const SkeletonTable = () => (
-  <>
-    <TableCell><div className="h-4 w-full bg-muted animate-pulse" /></TableCell>
-    <TableCell><div className="h-4 w-full bg-muted animate-pulse" /></TableCell>
-    <TableCell><div className="h-4 w-full bg-muted animate-pulse" /></TableCell>
-    <TableCell><div className="h-4 w-full bg-muted animate-pulse" /></TableCell>
-    <TableCell><div className="h-4 w-full bg-muted animate-pulse" /></TableCell>
-    <TableCell><div className="h-4 w-full bg-muted animate-pulse" /></TableCell>
-    <TableCell><div className="h-4 w-full bg-muted animate-pulse" /></TableCell>
-  </>
-);
+    try {
+      const res = await fetch(`https://lince.centrocontacto.cc/clients/records/${clientName}`, {
+        method: "PATCH",
+      });
 
-export const RecordingTable = ({ data = [], setData, loading = false }: RecordingTableProps) => {
-  const rowsToShow = loading ? 10 : data.length;
+      if (!res.ok) {
+        return toast.error("Erro ao atualizar status do cliente.");
+      }
 
-const handleInactivate = async (clientName: string) => {
-  const confirmed = window.confirm(`Deseja realmente inativar o cliente "${clientName}"?`);
-  if (!confirmed) return;
+      toast.success("Cliente inativado com sucesso!");
 
-  try {
-    const res = await fetch(`http://localhost:3333/clients/records/${clientName}`, {
-      method: "PATCH",
-    });
-
-    if (!res.ok) {
-      return toast.error("Erro ao atualizar status do cliente.");
+      setClientRecords?.((prev) => prev.filter((item) => item.clientName !== clientName));
+    } catch (err) {
+      toast.error("Erro de rede ao atualizar status.");
     }
+  };
 
-    toast.success("Cliente inativado com sucesso!");
-
-    setData?.((prev) => prev.filter((item) => item.clientName !== clientName));
-  } catch (err) {
-    toast.error("Erro de rede ao atualizar status.");
-  }
-};
+  useEffect(() => {
+    setIsLoading(true);
+    fetch("https://lince.centrocontacto.cc/clients/records")
+      .then(res => res.json())
+      .then(data => {
+        setClientRecords(data.clientRecord);
+        setIsLoading(false);
+      })
+      .catch(() => setIsLoading(false));
+  }, [refresh]);
 
   return (
     <div className="border rounded-md overflow-hidden w-full">
@@ -81,12 +66,12 @@ const handleInactivate = async (clientName: string) => {
 
         <TableBody>
           {Array.from({ length: rowsToShow }).map((_, index) => {
-            const row = data[index];
+            const row = clientRecords[index];
             const bgClass = index % 2 === 0 ? "" : "bg-muted";
 
             return (
               <TableRow key={index} className={bgClass}>
-                {loading ? (
+                {isLoading ? (
                   <SkeletonTable />
                 ) : (
                   <>

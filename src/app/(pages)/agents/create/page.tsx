@@ -95,7 +95,6 @@ export default function CreateAgentsPage() {
     onPremToken: string
   ): Promise<{ success: boolean; error?: string }> {
     try {
-      // Executa ambas as criações em paralelo
       const [cloudRes, onPremRes] = await Promise.allSettled([
         altitude.post("/api/instance/agentManager/createAgent", body, {
           headers: { Authorization: `Bearer ${cloudToken}` },
@@ -105,7 +104,6 @@ export default function CreateAgentsPage() {
         }),
       ]);
 
-      // Função auxiliar para tratar erros
       const handleError = (result: any, env: "Cloud" | "OnPremise") => {
         if (result.status === "fulfilled") return null;
 
@@ -126,13 +124,11 @@ export default function CreateAgentsPage() {
       const cloudError = handleError(cloudRes, "Cloud");
       const onPremError = handleError(onPremRes, "OnPremise");
 
-      // Se ambos criaram com sucesso
       if (!cloudError && !onPremError) {
         toast.success(`Agente "${body.Name}" criado com sucesso nos dois ambientes!`);
         return { success: true };
       }
 
-      // Se um falhou e o outro não, mostra um erro de inconsistência
       if (!cloudError && onPremError) {
         toast.error(`"${body.Name}" criado na Cloud, mas falhou no OnPremise.`);
         return { success: false, error: onPremError };
@@ -143,7 +139,6 @@ export default function CreateAgentsPage() {
         return { success: false, error: cloudError };
       }
 
-      // Se ambos falharam
       return { success: false, error: cloudError || onPremError };
     } catch (err: any) {
       console.error("Erro inesperado ao criar agente:", err);
@@ -338,7 +333,7 @@ export default function CreateAgentsPage() {
   return (
     <div>
       <Header title="Criar agentes" />
-      <div className="flex-1 flex justify-center p-4">
+      <div className={`flex-1 flex {} justify-center p-4`}>
         <form onSubmit={handleSubmit(handleCreateAgents)}>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-4">
             {fields.map((field, index) => (

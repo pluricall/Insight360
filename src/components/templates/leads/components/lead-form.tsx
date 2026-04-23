@@ -71,7 +71,7 @@ export function LeadForm() {
   async function onSubmit(data: LeadConfigFormData) {
     try {
       const response = await axios.post(
-        "https://agent.tejo.cc/Insight360api/leads/config",
+        "https://lince.centrocontacto.cc/leads/config",
         data
       );
       toast.success(`Configuração de ${response.data.clientName} criada com sucesso!`);

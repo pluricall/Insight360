@@ -67,7 +67,6 @@ export function GalpForm() {
       }
 
       const { fileName } = await response.json();
-      console.log(fileName);
       if (!fileName) throw new Error("Nenhum arquivo retornado pela API.");
 
       const downloadUrl = `/Insight360/api/galp/report/${fileName}`;

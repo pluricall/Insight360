@@ -73,7 +73,6 @@ export default function CreateSourceToCampaignPage() {
   const handleSubmit = async (data: SourceFormData) => {
     try {
       setIsLoading(true);
-      console.log(data);
 
       const response = await fetch(
         `/Insight360/apiloader/bd/campaign/${campaignId}/source/register`,

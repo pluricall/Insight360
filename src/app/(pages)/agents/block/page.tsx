@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthProvider";
 import { signInOnPremise } from "@/services/altitude/auth/signInOnPremise";
 import { Header } from "@/components/header";
+import { Card } from "@/components/ui/card";
 
 const schema = z.object({
   agentName: z.string().min(1, "Informe o username do agente"),
@@ -128,18 +129,18 @@ export default function BlockAgentsPage() {
     <div>
       <Header title="Bloquear Agentes (base, _f0, _50)" />
       <div className="flex-1 flex justify-center p-4">
-          <div className="w-80">
-            <form onSubmit={handleSubmit(openOnPremDialog)} className="flex flex-col gap-2">
-              <Input
-                label="Usuário"
-                {...register("agentName")}
-                error={errors.agentName?.message}
-              />
-              <Button type="submit" disabled={loading} className="w-full">
-                {loading ? "Bloqueando logins..." : "Bloquear Agentes"}
-              </Button>
-            </form>
-          </div>
+        <Card className="w-80 p-4">
+          <form onSubmit={handleSubmit(openOnPremDialog)} className="flex flex-col gap-2">
+            <Input
+              label="Usuário"
+              {...register("agentName")}
+              error={errors.agentName?.message}
+            />
+            <Button type="submit" disabled={loading} className="w-full">
+              {loading ? "Bloqueando logins..." : "Bloquear Agentes"}
+            </Button>
+          </form>
+        </Card>
 
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogContent>

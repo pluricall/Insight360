@@ -176,7 +176,6 @@ export function SourceForm({
   }, [frequency, setValue]);
 
   const handleFormSubmit = async (data: SourceFormData) => {
-    console.log("Form OK", data);
     onSubmit(data);
   };
 
