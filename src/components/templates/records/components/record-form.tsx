@@ -78,7 +78,7 @@ export function RecordForm({ onSuccess }: Props) {
   useEffect(() => {
     setSitesLoading(true);
 
-    fetch("http://localhost:3332/sharepoint/sites")
+    fetch("https://lince.centrocontacto.cc/sharepoint/sites")
       .then((res) => res.json())
       .then(setSites)
       .finally(() => setSitesLoading(false));
@@ -95,7 +95,7 @@ export function RecordForm({ onSuccess }: Props) {
 
     setDrivesLoading(true);
 
-    fetch(`http://localhost:3332/sharepoint/sites/${selectedSite}/drives`)
+    fetch(`https://lince.centrocontacto.cc/sharepoint/sites/${selectedSite}/drives`)
       .then((res) => res.json())
       .then(setDrives)
       .finally(() => setDrivesLoading(false));
@@ -109,7 +109,7 @@ export function RecordForm({ onSuccess }: Props) {
     setFolders([]);
     setFoldersLoading(true);
 
-    fetch(`http://localhost:3332/sharepoint/drives/${selectedDrive}/folders`)
+    fetch(`https://lince.centrocontacto.cc/sharepoint/drives/${selectedDrive}/folders`)
       .then((res) => res.json())
       .then(setFolders)
       .finally(() => setFoldersLoading(false));

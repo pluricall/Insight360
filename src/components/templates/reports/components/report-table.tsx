@@ -105,7 +105,7 @@ export function ReportTable({ refresh }: { refresh: number }) {
 
                     <TableCell>
                       <span
-                        className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                        className={`px-2 py-0.5 rounded-full text-xs font-bold ${
                           row.status === "ACTIVO"
                             ? "bg-green-100 text-green-700"
                             : "bg-red-100 text-red-600"
@@ -122,7 +122,15 @@ export function ReportTable({ refresh }: { refresh: number }) {
                     </TableCell>
 
                     <TableCell className="text-xs">
-                      {row.last_status || "—"}
+                      <span
+                        className={`text-xs font-bold ${
+                          row.last_status === "SUCCESS"
+                            ? " text-green-600"
+                            : "text-red-600"
+                        }`}
+                      >
+                        {row.last_status || "—"}
+                      </span>
                     </TableCell>
 
                     <TableCell>
